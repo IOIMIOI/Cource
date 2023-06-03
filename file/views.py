@@ -1,6 +1,8 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseNotFound, StreamingHttpResponse
 from django.shortcuts import render, redirect
-from django.views.generic import ListView, DetailView
+from django.urls import reverse_lazy
+from django.views.generic import ListView, DetailView, CreateView
 from .forms import *
 from .utils import *
 
@@ -130,12 +132,14 @@ def LoadTask(request):
     data = request.POST.copy()
     data.update({'user': request.user})
     form = AddTaskForm(data)
+
     if form.is_valid():
         form.user = request.user
         form.save()
         return redirect('home')
     else:
         form = AddTaskForm()
+
     return render(request, 'file/task_answer.html', {'form': form})
 
 
