@@ -1,0 +1,11 @@
+{% extends 'file/wiki_categories.html' %}
+
+{% block content %}
+<h1>{{wiki.title}}</h1>
+
+{% if wiki.file %}
+<a href="{{ wiki.file.url }}" target="_blank">Whitepaper</a>
+{% endif %}
+
+{{video.content|linebreaks}}
+{% endblock %}

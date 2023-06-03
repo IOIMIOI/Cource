@@ -1,0 +1,80 @@
+
+{% extends 'poll/testing_categories.html' %}
+{% block content %}
+
+
+
+
+
+
+
+
+<h1>{{poll.title}}</h1>
+
+{% if poll.file %}
+<a href="{{ poll.file.url }}" target="_blank">Whitepaper</a>
+{% endif %}
+
+{{video.content|linebreaks}}
+
+
+
+
+
+{% endblock %}
+################################
+{% extends 'base.html' %}
+
+{% block body %}
+
+{% if success_message %}
+<div class="alert alert-success"> {{ success_message }} </div>
+{% endif %}
+
+<h2> {{ poll.name }} </h2>
+<i>
+  <h6> {{ poll.description }} </h6>
+</i>
+<hr class="my-4">
+<form method="post">
+  {% csrf_token %}
+  {% for choice in poll.choices.all %}
+  <div class="form-check">
+    <input class="form-check-input" type="radio" name="choice_id" id="{{ choice.id }}" value="{{ choice.id }}">
+    <label class="form-check-label" for="{{ choice.id }}">
+      {{ choice.name }}
+    </label>
+  </div>
+  {% endfor %}
+  <hr class="my-4">
+  <button class="btn btn-outline-success">Vote</button>
+</form>
+
+{% if success_message %}
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<div id="piechart"></div>
+<script type="text/javascript">
+  var poll_results = {{ poll_results|safe }};
+
+  // Load google charts
+  google.charts.load('current', { 'packages': ['corechart'] });
+  google.charts.setOnLoadCallback(drawChart);
+
+  // Draw the chart and set the chart values
+  function drawChart() {
+
+    poll_results.unshift(["Choice", "Vote Count"]);
+    var data = google.visualization.arrayToDataTable(poll_results);
+
+    // Optional; add a title and set the width and height of the chart
+    var options = { 'width': 550, 'height': 400 };
+
+    // Display the chart inside the <div> element with id="piechart"
+    var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+    chart.draw(data, options);
+  }
+</script>
+
+{% endif %}
+
+{% endblock %}

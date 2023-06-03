@@ -1,0 +1,18 @@
+{% extends 'file/task_categories.html' %}
+
+{% block content %}
+<h1>{{task.title}}</h1>
+
+{{task.content|linebreaks}}
+
+{% if task.file %}
+<a href="{{ task.file.url }}" target="_blank">Скачать {{task.title}}</a>
+{% endif %}
+
+<ul class="list-articles">
+			<li>
+			<p class="link-read-post"><a href="{% url 'task_answer' %}">Загрузить ответ</a></p>
+			</li>
+</ul>
+
+{% endblock %}

@@ -1,0 +1,24 @@
+{% extends 'file/video_categories.html' %}
+
+{% block content %}
+<h1>{{video.title}}</h1>
+
+{% if video.file %}
+<p>
+<video
+              id="my-video"
+              class="video-js"
+              controls
+              preload="auto"
+              width="1000"
+              height="800"
+              data-setup="{}"
+          >
+            <source src="{% url 'stream' video.id %}" type="video/mp4"/>
+            <source src="{% url 'stream' video.id %}" type="video/webm"/>
+          </video>
+    </p>
+{% endif %}
+
+{{video.content|linebreaks}}
+{% endblock %}

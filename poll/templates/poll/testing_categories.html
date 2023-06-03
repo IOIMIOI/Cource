@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block catmenu %}
+	{% if cat_selected == 0 %}
+			<li class="selected">Все категории</li>
+	{% else %}
+			<li><a href="{% url 'testing_list' %}">Все категории</a></li>
+	{% endif %}
+
+	{% for c in cats %}
+		{% if c.testing__count > 0 %}
+			{% if c.pk == cat_selected %}
+				<li class="selected">{{c.name}}</li>
+			{% else %}
+				<li><a href="{{ c.get_absolute_url_testing }}">{{c.name}}</a></li>
+			{% endif %}
+		{% endif %}
+	{% endfor %}
+{% endblock %}
